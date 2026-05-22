@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Cocon — Safe Place & Détente</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #080a0f;
+  --bg2:     #0e1018;
+  --bg3:     #151820;
+  --bg4:     #1c2030;
+  --cream:   #ede8dc;
+  --gold:    #d4a853;
+  --gold2:   #f0c878;
+  --rose:    #c4788a;
+  --sage:    #7aaa88;
+  --mist:    #6a8fa8;
+  --lavender:#9884c8;
+  --text:    #c8c4b8;
+  --soft:    #6a6660;
+  --red:     #d46878;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── HERO BG ── */
+.hero-bg {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+}
+.hero-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, rgba(212,168,83,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 85% 75%, rgba(148,132,200,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(106,143,168,0.04) 0%, transparent 70%);
+}
+
+/* ── LAYOUT ── */
+.page { position: relative; z-index: 1; }
+
+/* ── HERO SECTION ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(212,168,83,0.25);
+  border-radius: 100px; padding: 7px 20px;
+  margin-bottom: 40px;
+  animation: fadeUp 1.2s ease both;
+  background: rgba(212,168,83,0.05);
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(64px, 12vw, 140px);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  margin-bottom: 8px;
+  animation: fadeUp 1.2s ease 0.15s both;
+}
+
+.hero-title span {
+  display: block;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 300;
+}
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--soft);
+  font-weight: 300;
+  margin-top: 28px; margin-bottom: 48px;
+  line-height: 1.7;
+  max-width: 480px;
+  animation: fadeUp 1.2s ease 0.3s both;
+}
+.hero-sub strong { color: var(--text); font-weight: 400; }
+
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, var(--gold), #b8892e);
+  color: #0a0800;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+  animation: fadeUp 1.2s ease 0.45s both;
+  box-shadow: 0 0 40px rgba(212,168,83,0.2);
+}
+.hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 50px rgba(212,168,83,0.35);
+}
+
+.hero-scroll {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--soft);
+  animation: fadeUp 1.2s ease 0.8s both;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* ── STATS ── */
+.stats-section {
+  padding: 80px 24px;
+  display: flex; justify-content: center;
+}
+.stats-inner {
+  display: flex; align-items: center; gap: 0;
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.stat-item {
+  padding: 32px 56px;
+  text-align: center;
+}
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; font-weight: 300;
+  color: var(--cream); line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-value.live { color: var(--sage); }
+.stat-label {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--soft); margin-top: 6px;
+}
+.stat-sep { width: 1px; background: rgba(255,255,255,0.06); align-self: stretch; }
+.pulse-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--sage); margin-right: 8px; vertical-align: middle;
+  animation: pulseDot 2s ease infinite;
+}
+@keyframes pulseDot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(122,170,136,0.5); }
+  50% { box-shadow: 0 0 0 7px rgba(122,170,136,0); }
+}
+
+/* ── FEATURES ── */
+.features-section {
+  padding: 40px 24px 100px;
+  max-width: 900px; margin: 0 auto;
+}
+.section-label {
+  text-align: center;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 56px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.section-label::before, .section-label::after {
+  content: ''; flex: 1; max-width: 80px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,168,83,0.3));
+}
+.section-label::after { background: linear-gradient(to left, transparent, rgba(212,168,83,0.3)); }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2px;
+}
+.feat {
+  background: var(--bg2);
+  padding: 32px 28px;
+  transition: background 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.feat::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,168,83,0.2), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feat:hover { background: var(--bg3); }
+.feat:hover::before { opacity: 1; }
+.feat:first-child { border-radius: 18px 0 0 0; }
+.feat:nth-child(2) { border-radius: 0 18px 0 0; }
+.feat:nth-last-child(2) { border-radius: 0 0 0 18px; }
+.feat:last-child { border-radius: 0 0 18px 0; }
+
+.feat-icon { font-size: 26px; margin-bottom: 16px; filter: saturate(0.7); }
+.feat-title { font-size: 16px; font-weight: 500; color: var(--cream); margin-bottom: 8px; }
+.feat-desc  { font-size: 13px; color: var(--soft); line-height: 1.7; }
+
+/* ── CONCOURS SECTION ── */
+.concours-section {
+  padding: 0 24px 120px;
+  max-width: 680px; margin: 0 auto;
+}
+
+.concours-card {
+  background: var(--bg2);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.concours-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, var(--rose), var(--gold), var(--lavender));
+}
+
+.concours-top {
+  padding: 36px 36px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.concours-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(212,168,83,0.1);
+  border: 1px solid rgba(212,168,83,0.2);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+}
+.concours-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400; color: var(--cream);
+  line-height: 1.2; margin-bottom: 10px;
+}
+.concours-desc { font-size: 14px; color: var(--soft); line-height: 1.7; }
+
+.prize-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 20px 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(212,168,83,0.03);
+}
+.prize-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(212,168,83,0.08);
+  border: 1px solid rgba(212,168,83,0.2);
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 12px; color: var(--gold); font-weight: 500;
+}
+
+/* ── SCREENS ── */
+.screen { padding: 32px 36px 36px; }
+.screen.hidden { display: none; }
+
+.form-label {
+  display: block; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 8px;
+}
+.form-input {
+  width: 100%; background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 13px 16px;
+  color: var(--cream); font-family: 'Outfit', sans-serif;
+  font-size: 15px; outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  margin-bottom: 18px;
+}
+.form-input:focus {
+  border-color: rgba(212,168,83,0.4);
+  box-shadow: 0 0 0 3px rgba(212,168,83,0.07);
+}
+.form-input::placeholder { color: var(--soft); }
+
+.form-hint {
+  font-size: 12px; color: var(--soft); margin-bottom: 24px; line-height: 1.7;
+}
+.form-hint a { color: var(--gold); text-decoration: none; }
+.form-hint a:hover { text-decoration: underline; }
+.form-hint strong { color: var(--text); font-weight: 500; }
+
+.form-error {
+  font-size: 13px; color: var(--red); margin-bottom: 14px;
+  display: none; padding: 10px 14px;
+  background: rgba(212,104,120,0.08); border-radius: 8px;
+  border: 1px solid rgba(212,104,120,0.2);
+}
+.form-error.show { display: block; }
+
+.btn-gold {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--gold), #b8892e);
+  border: none; border-radius: 10px;
+  color: #0a0800; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s ease;
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,168,83,0.3); }
+.btn-gold:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Vote screen */
+.user-banner {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg3); border-radius: 12px; padding: 14px 18px;
+  margin-bottom: 28px; border: 1px solid rgba(255,255,255,0.05);
+}
+.user-ava {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--gold), var(--rose));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 600; color: #0a0800;
+}
+.user-name { font-size: 14px; font-weight: 500; color: var(--cream); }
+.user-sub  { font-size: 12px; color: var(--soft); margin-top: 2px; }
+.user-check { margin-left: auto; font-size: 12px; color: var(--sage); }
+
+.vote-q {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 20px; color: var(--cream); margin-bottom: 6px;
+}
+.vote-hint { font-size: 13px; color: var(--soft); margin-bottom: 22px; line-height: 1.6; }
+
+.vote-nominee-input {
+  position: relative; margin-bottom: 24px;
+}
+.vote-nominee-input input {
+  width: 100%; background: var(--bg3);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 16px 16px 16px 48px;
+  color: var(--cream); font-family: 'Outfit', sans-serif;
+  font-size: 16px; font-weight: 500; outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.vote-nominee-input input:focus {
+  border-color: rgba(212,168,83,0.5);
+  box-shadow: 0 0 0 4px rgba(212,168,83,0.08);
+}
+.vote-nominee-input input::placeholder { color: var(--soft); font-weight: 300; font-size: 14px; }
+.vote-nominee-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 18px; pointer-events: none;
+}
+
+/* Result */
+.result-wrap { text-align: center; padding: 8px 0; }
+.result-glow {
+  font-size: 56px; margin-bottom: 20px;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  display: block;
+}
+@keyframes popIn {
+  from { transform: scale(0) rotate(-10deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.result-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; color: var(--cream); margin-bottom: 10px;
+}
+.result-text { font-size: 14px; color: var(--soft); line-height: 1.7; margin-bottom: 28px; }
+.result-text strong { color: var(--gold); }
+
+/* sending overlay */
+.sending-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8,10,15,0.85);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+  border-radius: 24px; z-index: 10;
+  backdrop-filter: blur(4px);
+}
+.sending-overlay.show { display: flex; }
+.sending-spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid rgba(212,168,83,0.2);
+  border-top-color: var(--gold);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.sending-label { font-size: 13px; color: var(--soft); letter-spacing: 0.08em; }
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center; padding: 48px 24px 64px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-size: 13px; color: var(--soft);
+}
+.site-footer a { color: var(--gold); text-decoration: none; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-reveal] {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+[data-reveal].visible {
+  opacity: 1; transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .stat-item { padding: 24px 28px; }
+  .stat-value { font-size: 36px; }
+  .feat:first-child  { border-radius: 18px 18px 0 0; }
+  .feat:nth-child(2) { border-radius: 0; }
+  .feat:nth-last-child(2) { border-radius: 0; }
+  .feat:last-child   { border-radius: 0 0 18px 18px; }
+  .concours-top { padding: 24px 20px 20px; }
+  .screen { padding: 20px 20px 24px; }
+  .prize-row { padding: 16px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Animated BG -->
+<div class="hero-bg"><canvas id="bgCanvas"></canvas></div>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-eyebrow">☁️ Le Cocon · Safe Place &amp; Détente</div>
+    <h1 class="hero-title">
+      Ton<br><span>Refuge</span>
+    </h1>
+    <p class="hero-sub">
+      Un espace protégé où la <strong>bienveillance</strong> est la seule règle.<br>
+      Ici, on s'écoute, on se soutient, on crée.
+    </p>
+    <a href="https://discord.gg/8J6PPtZw7H" class="hero-cta" target="_blank" rel="noopener">
+      Rejoindre le serveur ↗
+    </a>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Découvrir
+    </div>
+  </section>
+
+  <!-- ── STATS ── -->
+  <section class="stats-section" data-reveal>
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-value live">
+          <span class="pulse-dot"></span><span id="stat-online">—</span>
+        </div>
+        <div class="stat-label">En ligne</div>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-total">—</div>
+        <div class="stat-label">Membres</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="features-section">
+    <div class="section-label" data-reveal>Le Cocon c'est</div>
+    <div class="features-grid">
+      <div class="feat" data-reveal>
+        <div class="feat-icon">🌿</div>
+        <div class="feat-title">Safe Place</div>
+        <div class="feat-desc">Un espace protégé où la bienveillance est la seule règle. On s'écoute sans jamais se juger.</div>
+      </div>
+      <div class="feat" data-reveal>
+        <div class="feat-icon">🌀</div>
+        <div class="feat-title">Détente</div>
+        <div class="feat-desc">Des salons dédiés à la relaxation pour apaiser ton esprit et passer du bon temps.</div>
+      </div>
+      <div class="feat" data-reveal>
+        <div class="feat-icon">🤝</div>
+        <div class="feat-title">Entraide</div>
+        <div class="feat-desc">Que ce soit pour vider ton sac ou partager tes réussites, tu trouveras toujours une oreille.</div>
+      </div>
+      <div class="feat" data-reveal>
+        <div class="feat-icon">✨</div>
+        <div class="feat-title">Écriture</div>
+        <div class="feat-desc">Des salons faits pour y mettre tes pensées et laisser parler ta plume.</div>
+      </div>
+      <div class="feat" data-reveal>
+        <div class="feat-icon">🛡️</div>
+        <div class="feat-title">Staff pro</div>
+        <div class="feat-desc">Des veilleurs actifs pour garantir ta tranquillité 7j/7.</div>
+      </div>
+      <div class="feat" data-reveal style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold);text-align:center;line-height:1.5;">
+          🕊️ Il y aura toujours<br>une place pour toi.
+        </div>
+        <a href="https://discord.gg/8J6PPtZw7H" target="_blank" style="font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;">Nous rejoindre →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONCOURS ── -->
+  <section class="concours-section">
+    <div class="section-label" data-reveal>Concours du mois</div>
+    <div class="concours-card" data-reveal style="position:relative;">
+
+      <div class="concours-top">
+        <div class="concours-badge">🗝️ Vote mensuel</div>
+        <div class="concours-title">Élu du Cocon</div>
+        <div class="concours-desc">Chaque mois, les membres votent pour la personne qui mérite le plus le titre. Le gagnant reçoit le rôle exclusif sur le serveur.</div>
+      </div>
+
+      <div class="prize-row">
+        <div class="prize-chip">👑 Rôle Élu du Cocon</div>
+        <div class="prize-chip">📣 Annonce officielle</div>
+        <div class="prize-chip">📅 Tirage fin du mois</div>
+      </div>
+
+      <div class="screen">
+        <div class="result-wrap">
+          <span class="result-glow">✨</span>
+          <div class="result-title">Participe facilement</div>
+          <div class="result-text">
+            Aucun formulaire n'est nécessaire ici.
+            Rejoins le serveur Discord et participe au vote directement dans le salon dédié.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    ☁️ Le Cocon — Un refuge pour tous, toujours.<br>
+    <a href="https://discord.gg/8J6PPtZw7H" target="_blank">discord.gg/8J6PPtZw7H</a>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ── Canvas BG ──
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); initStars(); });
+
+function initStars() {
+  stars = Array.from({length: 120}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.2 + 0.2,
+    a: Math.random(),
+    speed: Math.random() * 0.003 + 0.001,
+    phase: Math.random() * Math.PI * 2
+  }));
+}
+initStars();
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  const t = Date.now() / 1000;
+  stars.forEach(s => {
+    s.a = 0.15 + 0.5 * (0.5 + 0.5 * Math.sin(t * s.speed * 6 + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(220,210,190,${s.a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// ── Scroll reveal ──
+const revealEls = document.querySelectorAll('[data-reveal]');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => io.observe(el));
+
+// ── Discord Stats ──
+async function loadStats() {
+  try {
+    const r = await fetch('https://discord.com/api/guilds/1450922450786320426/widget.json');
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    document.getElementById('stat-online').textContent = d.members?.length ?? '—';
+    document.getElementById('stat-total').textContent  = d.presence_count ?? '—';
+  } catch {
+    document.getElementById('stat-online').textContent = '—';
+    document.getElementById('stat-total').textContent  = '—';
+  }
+}
+loadStats();
+setInterval(loadStats, 30000);
+</script>
+</body>
+</html>
